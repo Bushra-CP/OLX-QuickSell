@@ -1,0 +1,26 @@
+import mongoose, { Schema } from "mongoose";
+import type { ProductInterface } from "../types/productTypes/productInterface.js";
+
+const productSchema = new Schema<ProductInterface>(
+  {
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, required: true },
+    category: { type: String, required: true },
+    image: { type: String, required: true },
+    status: {
+      type: String,
+      enum: ["available", "reserved", "sold"],
+      default: "available",
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+export const productModel = mongoose.model<ProductInterface>(
+  "Products",
+  productSchema,
+);
