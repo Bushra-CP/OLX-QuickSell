@@ -8,6 +8,8 @@ router.post("/signup", signupController.signup);
 
 router.post("/login", loginController.login);
 
+// router.post('/logout')
+
 router.post('/refreshToken',refreshTokenController)
 
 export default router;

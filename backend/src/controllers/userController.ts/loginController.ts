@@ -11,7 +11,7 @@ export class LoginController {
       const { user, jwtAccessToken, jwtRefreshToken } =
         await this.loginService.userLogin({ email, password });
 
-        console.log({ user, jwtAccessToken, jwtRefreshToken });
+        // console.log({ user, jwtAccessToken, jwtRefreshToken });
         
       res
         .cookie("refreshToken", jwtRefreshToken, {

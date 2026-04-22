@@ -1,6 +1,17 @@
-import { logout, updateAccessToken } from "@/redux/feactures/authSlice";
-import { store } from "@/redux/store/store";
 import axios from "axios";
+import { logout, updateAccessToken } from "@/redux/feactures/authSlice";
+import type { AppDispatch, RootState } from "@/redux/store/store";
+
+type StoreType = {
+  getState: () => RootState;
+  dispatch: AppDispatch;
+};
+
+let store: StoreType; // Use a variable to hold the store instance. we will inject later
+
+export const injectStore = (_store: StoreType) => {
+  store = _store;
+};
 
 const api = axios.create({
   baseURL: "http://localhost:3000/quickSell",
@@ -8,27 +19,35 @@ const api = axios.create({
 });
 
 // Request Interceptor (attach token)
-api.interceptors.request.use((config) => {
-  const token = store.getState().auth.accessToken;
+api.interceptors.request.use(
+  (config) => {
+    const token = store?.getState().auth.accessToken;
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
-  return config;
-});
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 // Response Interceptor (refresh logic)
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 403 && !originalRequest._retry) {
+    // Check if the error is due to an expired token
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const res = await axios.get(
+        const res = await axios.post(
           "http://localhost:3000/quickSell/user/refreshToken",
           {
             withCredentials: true,
@@ -45,6 +64,7 @@ api.interceptors.response.use(
 
         return api(originalRequest);
       } catch (refreshErr) {
+        console.error("Token refresh failed:", refreshErr);
         // Refresh token failed -> Force Logout.
         store.dispatch(logout());
         return Promise.reject(refreshErr);
