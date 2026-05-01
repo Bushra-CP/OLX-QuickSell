@@ -1,10 +1,11 @@
 export interface ProductInterface {
   _id?: string;
+  userId: string;
   title: string;
   description: string;
   price: number;
   category: string;
-  quantity:number;
+  quantity: number;
   image: string;
   status?: "available" | "reserved" | "sold";
 }

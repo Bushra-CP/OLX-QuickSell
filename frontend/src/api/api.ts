@@ -57,7 +57,9 @@ api.interceptors.response.use(
         const newAccessToken = res.data.accessToken;
 
         // update Redux
-        store.dispatch(updateAccessToken(newAccessToken));
+        Promise.resolve().then(() => {
+          store.dispatch(updateAccessToken(newAccessToken));
+        });
 
         // Retry the original request
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
@@ -65,8 +67,12 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshErr) {
         console.error("Token refresh failed:", refreshErr);
-        // Refresh token failed -> Force Logout.
-        store.dispatch(logout());
+        // Refresh token failed -> Force Logout
+
+        Promise.resolve().then(() => {
+          store.dispatch(logout());
+        });
+
         return Promise.reject(refreshErr);
       }
     }

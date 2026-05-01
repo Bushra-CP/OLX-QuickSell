@@ -10,8 +10,8 @@ import { verifyToken } from "../middlewares/authMiddleware.js";
 
 router.post(
   "/addProduct",
-  upload.single("image"),
   verifyToken,
+  upload.single("image"),
   addProductController.addProduct,
 );
 
@@ -22,5 +22,7 @@ router.get("/products", fetchProductController.fetchProductListing);
 router.get("/categories", getCategoryController.getCategories);
 
 router.get("/product/:id", productDetailsController.getProductDetails);
+
+
 
 export default router;

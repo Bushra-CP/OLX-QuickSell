@@ -2,12 +2,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import type { UserInterface } from "@/types/userInterface";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/redux/store/store";
 import { login } from "@/redux/feactures/authSlice";
+import toast from "react-hot-toast";
 
 function Login() {
   const {
@@ -18,6 +19,7 @@ function Login() {
   } = useForm<UserInterface>();
 
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const onSubmit = async () => {
     try {
@@ -28,9 +30,11 @@ function Login() {
 
       //login thunk
       await dispatch(login(userData));
+
+      navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
-      alert("Failed to login");
+      toast.error("Failed to login");
     }
   };
 

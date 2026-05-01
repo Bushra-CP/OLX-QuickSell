@@ -1,17 +1,42 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import storage from "redux-persist/es/storage";
+import { persistReducer, persistStore } from "redux-persist";
 import authReducer from "../feactures/authSlice";
 import productsReducer from "../feactures/productsSlice";
 import productListingReducer from "../feactures/productListingSlice";
 import addProductReducer from "../feactures/addProductSlice";
+import cartReducer from "../feactures/cartSlice";
+
+//config to persist user
+const authPersistConfig = {
+  key: "auth",
+  storage,
+  whitelist: ["user"],
+};
+
+//config to persist cart
+const cartPersistConfig = {
+  key: "cart",
+  storage,
+  whitelist: ["cartItems"],
+};
+
+const rootReducer = combineReducers({
+  auth: persistReducer(authPersistConfig, authReducer),
+  cart: persistReducer(cartPersistConfig, cartReducer),
+  addProduct: addProductReducer,
+  products: productsReducer,
+  productsListing: productListingReducer,
+});
 
 export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    addProduct: addProductReducer,
-    products: productsReducer,
-    productsListing: productListingReducer,
-  },
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
 });
+
+//export persistor
+export const persistor = persistStore(store);
 
 // TS helper types for Redux:
 // RootState = type of store state

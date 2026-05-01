@@ -88,7 +88,8 @@ function ProductListing() {
 
   if (loading) return <p className="p-6">Loading products...</p>;
   if (error) return <p className="p-6">{error}</p>;
-  if (!products.length) return <p className="p-6">No products found</p>;
+  if (!loading && !products.length)
+    return <p className="p-6">No products found</p>;
 
   return (
     <div className="flex">

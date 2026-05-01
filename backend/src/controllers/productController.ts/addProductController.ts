@@ -9,6 +9,8 @@ export class AddProductController {
     try {
       // console.log(req.body);
       // console.log(req.file);
+      const userId = (req as any).userId;
+      // console.log(userId);
 
       if (!req.file) {
         return res.status(400).json({ message: "Image is required" });
@@ -22,6 +24,7 @@ export class AddProductController {
       const image = result.secure_url;
 
       const data = {
+        userId,
         title,
         description,
         price: Number(price),

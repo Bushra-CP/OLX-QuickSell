@@ -10,6 +10,7 @@ export const verifyToken = (
   res: Response,
   next: NextFunction,
 ) => {
+  
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -23,6 +24,7 @@ export const verifyToken = (
       token,
       process.env.JWT_ACCESS_SECRET!,
     ) as JwtPayload;
+
     (req as any).userId = decoded.userId;
     next();
   } catch (error) {

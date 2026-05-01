@@ -22,7 +22,7 @@ interface ProductListingState {
 
 const initialState: ProductListingState = {
   products: [],
-  loading: false,
+  loading: true,
   error: null,
   page: 1,
   totalPages: 1,

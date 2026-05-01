@@ -5,7 +5,7 @@ import { generateAccessToken } from "../../utils/tokenUtils.js";
 export const refreshTokenController = async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken)
-    return res.status(401).json({ message: "No Refresh Token" });
+    return res.status(401).json({ message: "Please login" });
 
   try {
     const decoded = jwt.verify(

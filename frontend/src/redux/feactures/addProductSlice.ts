@@ -1,4 +1,4 @@
-import api from "@/api/API";
+import api from "@/api/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 interface ProductType {
@@ -20,9 +20,7 @@ export const addProduct = createAsyncThunk(
       "http://localhost:3000/quickSell/addProduct",
       formData,
       {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        withCredentials: true,
       },
     );
     return res.data;

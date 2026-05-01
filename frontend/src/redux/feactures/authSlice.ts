@@ -30,31 +30,39 @@ const initialState: AuthState = {
 //SIGNUP THUNK
 export const signup = createAsyncThunk<AuthResponse, UserInterface>(
   "signup/signupSlice",
-  async (userData: UserInterface) => {
-    const res = await axios.post(
-      "http://localhost:3000/quickSell/user/signup",
-      userData,
-      { withCredentials: true },
-    );
-    return res.data;
+  async (userData: UserInterface, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/quickSell/user/signup",
+        userData,
+        { withCredentials: true },
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(`Logout failed": ${error}`);
+    }
   },
 );
 
 //LOGIN THUNK
 export const login = createAsyncThunk<AuthResponse, UserInterface>(
   "login/LoginSlice",
-  async (userData: UserInterface) => {
-    const res = await axios.post(
-      "http://localhost:3000/quickSell/user/login",
-      userData,
-      { withCredentials: true },
-    );
-    return res.data;
+  async (userData: UserInterface, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/quickSell/user/login",
+        userData,
+        { withCredentials: true },
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(`Logout failed": ${error}`);
+    }
   },
 );
 
 //LOGOUT THUNK
-export const logoutUser = createAsyncThunk(
+export const logout = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
@@ -71,7 +79,7 @@ export const logoutUser = createAsyncThunk(
 );
 
 //SLICE
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
@@ -116,17 +124,17 @@ const authSlice = createSlice({
       })
 
       // LOGOUT
-      .addCase(logoutUser.pending, (state) => {
+      .addCase(logout.pending, (state) => {
         state.loading = true;
       })
-      .addCase(logoutUser.fulfilled, (state) => {
+      .addCase(logout.fulfilled, (state) => {
         state.loading = false;
         state.user = null;
         state.accessToken = null;
         state.success = false;
         state.error = null;
       })
-      .addCase(logoutUser.rejected, (state) => {
+      .addCase(logout.rejected, (state) => {
         state.loading = false;
         state.user = null;
         state.accessToken = null;

@@ -3,10 +3,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 //function for productFetch
-export const productFetch = createAsyncThunk("products/productFetch", async () => {
-  const res = await axios.get("http://localhost:3000/quickSell/");
-  return res.data;
-});
+export const productFetch = createAsyncThunk(
+  "products/productFetch",
+  async () => {
+    const res = await axios.get("http://localhost:3000/quickSell/");
+    return res.data;
+  },
+);
 
 interface ProductType {
   products: ProductInterface[];
@@ -23,7 +26,17 @@ const initialState: ProductType = {
 const productSlice = createSlice({
   name: "products",
   initialState,
-  reducers: {},
+  reducers: {
+    updateQuantity: (state, action) => {
+      const item = state.products.find(
+        (item) => item._id == action.payload.productId,
+      );
+
+      if (item) {
+        item.quantity += action.payload.quantity;
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(productFetch.pending, (state) => {
@@ -40,5 +53,7 @@ const productSlice = createSlice({
       });
   },
 });
+
+export const { updateQuantity } = productSlice.actions;
 
 export default productSlice.reducer;

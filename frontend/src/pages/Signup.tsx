@@ -8,6 +8,7 @@ import type { UserInterface } from "@/types/userInterface";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/redux/store/store";
 import { signup } from "@/redux/feactures/authSlice";
+import toast from "react-hot-toast";
 
 function Signup() {
   const {
@@ -29,10 +30,10 @@ function Signup() {
       //signup thunk
       await dispatch(signup(userData));
 
-      alert("Signup Successful");
+      toast.success("Signup Successful");
     } catch (error) {
       console.error("Signup failed:", error);
-      alert("Failed to signup");
+      toast.error("Failed to signup");
     }
   };
 

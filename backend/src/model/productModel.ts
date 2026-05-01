@@ -3,6 +3,7 @@ import type { ProductInterface } from "../types/productTypes/productInterface.js
 
 const productSchema = new Schema<ProductInterface>(
   {
+    userId: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },

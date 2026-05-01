@@ -3,8 +3,9 @@ import dotenv from "dotenv";
 dotenv.config();
 import cors from "cors";
 import { connectDB } from "./config/db.js";
-import productRoutes from "../src/routes/productRoutes.js";
-import userRoutes from "../src/routes/userRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
 import cookieParser from "cookie-parser";
 
 const app = express();
@@ -25,6 +26,8 @@ connectDB();
 app.use("/quickSell", productRoutes);
 
 app.use("/quickSell/user", userRoutes);
+
+app.use("/quickSell/cart", cartRoutes);
 
 app.get("/", (req, res) => {
   res.send("server running");

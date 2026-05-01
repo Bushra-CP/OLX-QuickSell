@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/redux/store/store";
 import { addProduct } from "@/redux/feactures/addProductSlice";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Sell() {
   const {
@@ -44,14 +45,14 @@ function Sell() {
       // axios request
       await dispatch(addProduct(formData));
 
-      alert("Product uploaded successfully!");
+      toast.success("Product uploaded successfully!");
       reset();
       setImage(null);
 
       navigate("/");
     } catch (error) {
       console.error("Upload failed:", error);
-      alert("Failed to upload product.");
+      toast.error("Failed to upload product.");
     }
   };
 
