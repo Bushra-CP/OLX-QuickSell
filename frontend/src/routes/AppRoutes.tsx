@@ -10,6 +10,11 @@ import ProductDetails from "@/pages/ProductDetails";
 import Signup from "@/pages/Signup";
 import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
+import CheckoutLayout from "@/layout/CheckoutLayout";
+import Orders from "@/pages/Orders";
+import MyProducts from "@/pages/UserProducts";
+import EditProduct from "@/pages/EditProduct";
+import ErrorBoundary from "@/error/ErrorBoundary";
 
 function AppRoutes() {
   return (
@@ -23,42 +28,88 @@ function AppRoutes() {
           <Route
             path="/sell"
             element={
-              <ProtectedRoute>
-                <Sell />
-              </ProtectedRoute>
+              <ErrorBoundary>
+                <ProtectedRoute>
+                  <Sell />
+                </ProtectedRoute>
+              </ErrorBoundary>
             }
           />
           <Route
             path="/cart"
             element={
-              <ProtectedRoute>
-                <Cart />
-              </ProtectedRoute>
+              <ErrorBoundary>
+                <ProtectedRoute>
+                  <Cart />
+                </ProtectedRoute>
+              </ErrorBoundary>
             }
           />
           <Route
-            path="/checkout"
+            path="/orders"
             element={
-              <ProtectedRoute>
-                <Checkout />
-              </ProtectedRoute>
+              <ErrorBoundary>
+                <ProtectedRoute>
+                  <Orders />
+                </ProtectedRoute>
+              </ErrorBoundary>
+            }
+          />
+
+          <Route
+            path="/myProducts"
+            element={
+              <ErrorBoundary>
+                <ProtectedRoute>
+                  <MyProducts />
+                </ProtectedRoute>
+              </ErrorBoundary>
+            }
+          />
+
+          <Route
+            path="/editProduct/:productId"
+            element={
+              <ErrorBoundary>
+                <ProtectedRoute>
+                  <EditProduct />
+                </ProtectedRoute>
+              </ErrorBoundary>
             }
           />
         </Route>
+
+        <Route element={<CheckoutLayout />}>
+          <Route
+            path="/checkout"
+            element={
+              <ErrorBoundary>
+                <ProtectedRoute>
+                  <Checkout />
+                </ProtectedRoute>
+              </ErrorBoundary>
+            }
+          />
+        </Route>
+
         <Route
           path="/login"
           element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
+            <ErrorBoundary>
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            </ErrorBoundary>
           }
         />
         <Route
           path="/signup"
           element={
-            <PublicRoute>
-              <Signup />
-            </PublicRoute>
+            <ErrorBoundary>
+              <PublicRoute>
+                <Signup />
+              </PublicRoute>
+            </ErrorBoundary>
           }
         />
       </Routes>

@@ -11,13 +11,13 @@ export class LoginController {
       const { user, jwtAccessToken, jwtRefreshToken } =
         await this.loginService.userLogin({ email, password });
 
-        // console.log({ user, jwtAccessToken, jwtRefreshToken });
-        
+      // console.log({ user, jwtAccessToken, jwtRefreshToken });
+
       res
         .cookie("refreshToken", jwtRefreshToken, {
           httpOnly: true,
           secure: false,
-          sameSite: "strict",
+          sameSite: "lax",
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         })
         .status(200)
@@ -29,7 +29,9 @@ export class LoginController {
     } catch (error) {
       console.log(error);
 
-      res.status(500).json("Login failed");
+      res.status(400).json({
+        message: error instanceof Error ? error.message : "Login failed",
+      });
     }
   };
 }

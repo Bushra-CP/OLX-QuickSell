@@ -26,6 +26,7 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // console.log("token:", token);
 
     return config;
   },
@@ -47,8 +48,9 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const res = await axios.post(
+        const res = await api.post(
           "http://localhost:3000/quickSell/user/refreshToken",
+          {},
           {
             withCredentials: true,
           },
@@ -56,10 +58,12 @@ api.interceptors.response.use(
 
         const newAccessToken = res.data.accessToken;
 
+        // console.log("newAccessToken:", newAccessToken);
+
         // update Redux
-        Promise.resolve().then(() => {
+   
           store.dispatch(updateAccessToken(newAccessToken));
-        });
+
 
         // Retry the original request
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;

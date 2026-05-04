@@ -81,7 +81,7 @@ function ProductListing() {
           page,
         }),
       );
-    }, 500);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [search, category, minPrice, maxPrice, page, dispatch]);

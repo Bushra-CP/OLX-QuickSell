@@ -28,12 +28,12 @@ function Signup() {
       };
 
       //signup thunk
-      await dispatch(signup(userData));
+      await dispatch(signup(userData)).unwrap();
 
       toast.success("Signup Successful");
     } catch (error) {
-      console.error("Signup failed:", error);
-      toast.error("Failed to signup");
+      // console.error("Signup failed:", error);
+      toast.error(String(error), { id: "login-required-toast" });
     }
   };
 

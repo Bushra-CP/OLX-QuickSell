@@ -16,13 +16,11 @@ export interface CartProcesses {
 
   updateProductQuantity(productId: string, quantity: number): Promise<void>;
 
-  // fetchCart(userId: string): Promise<CartInterface[]>;
+  fetchCart(userId: string): Promise<CartInterface[]>;
 
-  // updateCart(
-  //   userId: string,
-  //   productId: string,
-  //   quantity: number,
-  // ): Promise<void>;
-
-  // removeFromCart(userId: string, productId: string): Promise<void>;
+  updateQuantityInCart(
+    userId: string,
+    productId: string,
+    quantity: number,
+  ): Promise<void>;
 }

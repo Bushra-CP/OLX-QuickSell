@@ -15,7 +15,7 @@ export class SignupService {
     const userExists = await this.signupInterface.isUserExist(userData.email);
 
     if (userExists) {
-      throw new Error("User already exists");
+      throw new Error("Email already registered");
     }
 
     const hashedPassword = await bcrypt.hash(userData.password, 10);

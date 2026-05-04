@@ -8,13 +8,13 @@ import { Link } from "react-router-dom";
 function Home() {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { products, loading, error } = useSelector(
-    (state: RootState) => state.products,
-  );
-
   useEffect(() => {
     dispatch(productFetch());
   }, [dispatch]);
+
+  const { products, loading, error } = useSelector(
+    (state: RootState) => state.products,
+  );
 
   return (
     <>
@@ -39,7 +39,7 @@ function Home() {
         {error && <p>failed to fetch products</p>}
 
         {products.map((product) => (
-          <ProductCard key={product._id!} product={product} />
+          <ProductCard key={product._id} product={product} />
         ))}
       </div>
     </>

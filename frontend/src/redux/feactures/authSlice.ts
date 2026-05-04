@@ -39,7 +39,13 @@ export const signup = createAsyncThunk<AuthResponse, UserInterface>(
       );
       return res.data;
     } catch (error) {
-      return rejectWithValue(`Logout failed": ${error}`);
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(
+          error.response?.data?.message || "Invalid credentials",
+        );
+      }
+
+      return rejectWithValue("Something went wrong");
     }
   },
 );
@@ -47,7 +53,7 @@ export const signup = createAsyncThunk<AuthResponse, UserInterface>(
 //LOGIN THUNK
 export const login = createAsyncThunk<AuthResponse, UserInterface>(
   "login/LoginSlice",
-  async (userData: UserInterface, { rejectWithValue }) => {
+  async (userData, { rejectWithValue }) => {
     try {
       const res = await axios.post(
         "http://localhost:3000/quickSell/user/login",
@@ -56,7 +62,13 @@ export const login = createAsyncThunk<AuthResponse, UserInterface>(
       );
       return res.data;
     } catch (error) {
-      return rejectWithValue(`Logout failed": ${error}`);
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(
+          error.response?.data?.message || "Invalid credentials",
+        );
+      }
+
+      return rejectWithValue("Something went wrong");
     }
   },
 );

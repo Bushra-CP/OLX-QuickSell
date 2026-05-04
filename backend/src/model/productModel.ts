@@ -12,7 +12,7 @@ const productSchema = new Schema<ProductInterface>(
     image: { type: String, required: true },
     status: {
       type: String,
-      enum: ["available", "reserved", "sold"],
+      enum: ["available", "sold"],
       default: "available",
     },
   },

@@ -38,10 +38,48 @@ export class CartRepository implements CartProcesses {
     await cart.save();
   }
 
-  //REDUCE QUANTITY OF PRODUCT
+  //REDUCE QUANTITY OF PRODUCT IN PRODUCT COLLECTION
   async updateProductQuantity(productId: string, quantity: number) {
     await productModel.findByIdAndUpdate(productId, {
-      $inc: { quantity: -quantity },
+      $inc: { quantity: quantity },
     });
+  }
+
+  //FETCH CART PRODUCTS OF A USER
+  async fetchCart(userId: string) {
+    const cart = await cartModel
+      .findOne({ userId })
+      .select(
+        "items.productId items.title items.price items.category items.quantity items.image",
+      )
+      .lean();
+
+    return cart?.items || [];
+  }
+
+  //UPDATE QUANTITY OF PRODUCT IN CART
+  async updateQuantityInCart(
+    userId: string,
+    productId: string,
+    quantity: number,
+  ) {
+    await cartModel.findOneAndUpdate(
+      { userId, "items.productId": productId },
+      {
+        $inc: { "items.$.quantity": -quantity },
+      },
+    );
+
+    //remove item if quantiy becomes 0
+    await cartModel.updateOne(
+      {
+        userId,
+        "items.productId": productId,
+        "items.quantity": { $lte: 0 },
+      },
+      {
+        $pull: { items: { productId } },
+      },
+    );
   }
 }

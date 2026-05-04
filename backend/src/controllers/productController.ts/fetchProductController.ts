@@ -55,4 +55,18 @@ export class FetchProductController {
       }
     }
   };
+
+  fetchUserProducts = async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+
+      const products = await this.fetchProductService.fetchUserProducts(userId);
+
+      // console.log(products);
+
+      res.json({ products });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }

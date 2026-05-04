@@ -1,3 +1,4 @@
+import api from "@/api/api";
 import type { ProductInterface } from "@/types/productInterface";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -10,6 +11,41 @@ export const productFetch = createAsyncThunk(
     return res.data;
   },
 );
+
+//TO GET USER PRODUCTS
+export const getUserProductsAPI = async () => {
+  const res = await api.get("/myProducts");
+  return res.data;
+};
+
+//TO DELETE A PRODUCT
+export const deleteProductAPI = async (productId: string) => {
+  const res = await api.delete(`/deleteProduct/${productId}`, {
+    withCredentials: true,
+  });
+  return res.data;
+};
+
+// TO GET A PRODUCT
+export const getSingleProductAPI = async (productId: string) => {
+  const res = await axios.get(
+    `http://localhost:3000/quickSell/product/${productId}`,
+  );
+  return res.data;
+};
+
+//UPDATE PRODUCT DETAILS
+export const updateProductAPI = async (
+  productId: string,
+  formData: FormData,
+) => {
+  const res = await api.put(`/editProduct/${productId}`, formData, {
+    withCredentials: true,
+  });
+  return res.data;
+};
+
+///////////////////////////////////////////////
 
 interface ProductType {
   products: ProductInterface[];

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ShoppingCart,
@@ -47,14 +47,38 @@ function Navbar() {
   const [search, setSearch] = useState("");
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  //Sync search input with URL
+  useEffect(() => {
+    function getSerchURLs() {
+      const searchFromURL = searchParams.get("search") || "";
+      setSearch(searchFromURL);
+    }
+
+    getSerchURLs();
+  }, [searchParams]);
 
   const handleSearch = () => {
     if (!search.trim()) return;
-    navigate(`/products?search=${encodeURIComponent(search)}`);
+
+    const params = Object.fromEntries(searchParams.entries());
+    params.search = search;
+
+    setSearchParams(params);
+    navigate(`/products?${new URLSearchParams(params)}`);
+
     setIsMobileSearchOpen(false);
   };
 
-  const clearSearch = () => setSearch("");
+  const clearSearch = () =>  {
+    setSearch("");
+
+    const params = Object.fromEntries(searchParams.entries());
+    delete params.search;
+
+    setSearchParams(params);
+  };
 
   const handleLogout = async () => {
     await dispatch(logout());
@@ -111,7 +135,7 @@ function Navbar() {
                     {user ? (
                       <div className="flex flex-col gap-4">
                         <Link
-                          to="/profile"
+                          to="/myProducts"
                           className="flex items-center gap-3 text-lg font-medium"
                         >
                           <Package className="mr-2 h-4 w-4" /> My Listings
@@ -217,12 +241,16 @@ function Navbar() {
               <DropdownMenuContent align="end" className="w-56">
                 {user ? (
                   <>
-                    <DropdownMenuItem className="cursor-pointer">
-                      <Package className="mr-2 h-4 w-4" /> My Listings
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      <ClipboardList className="mr-2 h-4 w-4" /> My Orders
-                    </DropdownMenuItem>
+                    <Link to="/myProducts">
+                      <DropdownMenuItem className="cursor-pointer">
+                        <Package className="mr-2 h-4 w-4" /> My Listings
+                      </DropdownMenuItem>
+                    </Link>
+                    <Link to="/orders">
+                      <DropdownMenuItem className="cursor-pointer">
+                        <ClipboardList className="mr-2 h-4 w-4" /> My Orders
+                      </DropdownMenuItem>
+                    </Link>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       className="text-red-600 cursor-pointer"

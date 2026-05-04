@@ -74,4 +74,10 @@ export class FetchProductRepository implements FetchProductInterface {
       total,
     };
   }
+
+  //FETCH PRODUCTS OF A PARTICULAR USER
+  async fetchUserProducts(userId: string) {
+    return await productModel.find({ userId });
+  }
+  
 }

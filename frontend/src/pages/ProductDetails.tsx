@@ -1,15 +1,19 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { ProductInterface } from "@/types/productInterface";
-import axios from "axios";
 import { addToCart, addToCartAPI } from "@/redux/feactures/cartSlice";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/redux/store/store";
 import toast from "react-hot-toast";
 import { ShoppingCart } from "lucide-react";
+import {
+  getSingleProductAPI,
+  updateQuantity,
+} from "@/redux/feactures/productsSlice";
 
 function ProductDetails() {
   const dispatch = useDispatch<AppDispatch>();
+
   const { id } = useParams();
 
   const [product, setProduct] = useState<ProductInterface | null>(null);
@@ -17,10 +21,10 @@ function ProductDetails() {
 
   //to fetch product
   const fetchProduct = async () => {
-    const res = await axios.get(
-      `http://localhost:3000/quickSell/product/${id}`,
-    );
-    return res.data;
+    if (!id) {
+      throw new Error("Product ID is missing");
+    }
+    return await getSingleProductAPI(id);
   };
 
   useEffect(() => {
@@ -70,6 +74,8 @@ function ProductDetails() {
       setProduct(updatedProduct);
 
       dispatch(addToCart(productDetails));
+
+      dispatch(updateQuantity({ productId, quantity: -qty }));
 
       toast.success(res.message);
 

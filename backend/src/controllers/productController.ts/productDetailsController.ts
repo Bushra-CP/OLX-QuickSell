@@ -15,6 +15,8 @@ export class ProductDetailsController {
 
       const product = await this.productDetailsService.getProduct(id);
 
+      // console.log(product);
+
       res.status(200).json(product);
     } catch (error) {
       if (error instanceof Error) {

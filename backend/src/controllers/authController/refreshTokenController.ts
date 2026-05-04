@@ -3,6 +3,9 @@ import type { Request, Response } from "express";
 import { generateAccessToken } from "../../utils/tokenUtils.js";
 
 export const refreshTokenController = async (req: Request, res: Response) => {
+  
+    // console.log("cookies:", req.cookies);
+  
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken)
     return res.status(401).json({ message: "Please login" });

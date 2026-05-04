@@ -15,7 +15,7 @@ export class LoginService {
     const user = await this.loginInterface.login(userData.email);
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("Invalid email or password");
     }
 
     const isMatch = await bcrypt.compare(userData.password, user.password);

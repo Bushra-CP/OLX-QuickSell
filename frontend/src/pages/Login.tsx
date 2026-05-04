@@ -28,13 +28,11 @@ function Login() {
         password: getValues("password"),
       };
 
-      //login thunk
-      await dispatch(login(userData));
+      await dispatch(login(userData)).unwrap();
 
       navigate("/");
     } catch (error) {
-      console.error("Login failed:", error);
-      toast.error("Failed to login");
+      toast.error(String(error), { id: "login-required-toast" });
     }
   };
 

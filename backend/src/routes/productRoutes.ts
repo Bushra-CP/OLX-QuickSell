@@ -23,6 +23,23 @@ router.get("/categories", getCategoryController.getCategories);
 
 router.get("/product/:id", productDetailsController.getProductDetails);
 
+router.get(
+  "/myProducts",
+  verifyToken,
+  fetchProductController.fetchUserProducts,
+);
 
+router.put(
+  "/editProduct/:productId",
+  verifyToken,
+  upload.single("image"),
+  addProductController.updateProduct,
+);
+
+router.delete(
+  "/deleteProduct/:productId",
+  verifyToken,
+  addProductController.deleteProduct,
+);
 
 export default router;

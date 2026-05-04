@@ -32,7 +32,7 @@ export class AddToCartService {
     const result = await this.cart.addToCart(userId, data);
 
     // Reduce quantity of product
-    await this.cart.updateProductQuantity(productId, quantity);
+    await this.cart.updateProductQuantity(productId, -quantity);
 
     return result;
   }

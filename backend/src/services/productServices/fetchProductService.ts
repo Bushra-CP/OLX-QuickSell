@@ -13,4 +13,8 @@ export class FetchProductService {
   async productListingFetch(filter: Filters) {
     return this.productList.fetchProductListing(filter);
   }
+
+  async fetchUserProducts(userId: string) {
+    return this.productList.fetchUserProducts(userId);
+  }
 }
