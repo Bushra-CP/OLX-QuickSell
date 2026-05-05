@@ -44,6 +44,7 @@ function Navbar() {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
   const email = user?.email;
+
   const [search, setSearch] = useState("");
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const navigate = useNavigate();
@@ -71,7 +72,7 @@ function Navbar() {
     setIsMobileSearchOpen(false);
   };
 
-  const clearSearch = () =>  {
+  const clearSearch = () => {
     setSearch("");
 
     const params = Object.fromEntries(searchParams.entries());
